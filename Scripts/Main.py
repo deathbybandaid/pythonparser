@@ -9,6 +9,7 @@ This is the central script
 
 def mainfunction():
     dbbparse = class_create('dbbparse')
+    print 'here'
     # relativepaths()
     # dbb_avatar()
 
