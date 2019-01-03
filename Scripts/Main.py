@@ -31,11 +31,9 @@ def mainfunction():
 def relativepaths(dbbparse):
     dbbparse.paths = dict()
 
-    dirname, filename = os.path.split(os.path.abspath(__file__))
-    print "running from", dirname
-    print "file is", filename
+    dbbparse.paths['scripts'] = os.path.split(os.path.abspath(os.path.realpath(sys.argv[0])))[0]
 
-    dbbparse.paths['current'] = os.path.split(os.path.abspath(os.path.realpath(sys.argv[0])))[0]
+    dbbparse.paths['root'] = os.path.dirname(dbbparse.paths['scripts'])
 
     return dbbparse
 
