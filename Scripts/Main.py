@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # coding=utf-8
-from __future__ import unicode_literals, absolute_import, print_function, division
 
 # system imports
 import os
 import sys
-
+currentfilepath = os.path.dirname(__file__)
 
 """
 This is the central script
@@ -17,12 +16,14 @@ def mainfunction():
     # create dynamic class
     dbbparse = class_create('dbbparse')
 
+    print 'herea'
+
     # save relative paths of interest
     dbbparse = relativepaths(dbbparse)
 
-    pathdict = dbbparse.paths
+    print 'hereb'
 
-    print pathdict
+    print str(dbbparse.paths)
 
     # dbb_avatar(dbbparse)
 
@@ -30,12 +31,16 @@ def mainfunction():
 def relativepaths(dbbparse):
     dbbparse.paths = dict()
 
-    dbbparse.paths['current'] = os.path.dirname(__file__)
+    dirname, filename = os.path.split(os.path.abspath(__file__))
+    print "running from", dirname
+    print "file is", filename
+
+    dbbparse.paths['current'] = currentfilepath
 
     return dbbparse
 
 
-def dbb_avatar(dbbparse):
+def dbb_avatar():
     filepath = 'sadsdf'
     inf = codecs.open(filepath, "r", encoding='utf-8')
     infread = inf.read()
