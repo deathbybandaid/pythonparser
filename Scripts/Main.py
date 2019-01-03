@@ -20,7 +20,9 @@ def mainfunction():
     # save relative paths of interest
     dbbparse = relativepaths(dbbparse)
 
-    print dbbparse.paths
+    pathdict = dbbparse.paths
+
+    print pathdict
 
     # dbb_avatar(dbbparse)
 
