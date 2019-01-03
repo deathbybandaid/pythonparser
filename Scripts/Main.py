@@ -4,7 +4,7 @@
 # system imports
 import os
 import sys
-currentfilepath = os.path.dirname(__file__)
+
 
 """
 This is the central script
@@ -35,7 +35,7 @@ def relativepaths(dbbparse):
     print "running from", dirname
     print "file is", filename
 
-    dbbparse.paths['current'] = currentfilepath
+    dbbparse.paths['current'] = os.path.split(os.path.abspath(os.path.realpath(sys.argv[0])))[0]
 
     return dbbparse
 
