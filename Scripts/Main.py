@@ -45,6 +45,15 @@ def mainfunction():
     osd(textarray='Internet connection success!!', indent=1, color='GREEN')
     print('\n' * 2)
 
+    osd(textarray='Cleaning Temp Directory.', color='YELLOW')
+    tempclean(dbbparse)
+    print('\n' * 2)
+
+    osd(textarray='Pushing To Github.', color='YELLOW')
+    if not gitpush(dbbparse):
+        return
+    print('\n' * 2)
+
 
 """
 Network Functions
@@ -102,29 +111,29 @@ File Structures
 
 def gitpull(dbbparse):
     if os.path.isdir(dbbparse.paths['root']):
-        osd("Pulling " + str(dbbparse.paths['root']) + "From Github.", color='GREEN', indent=1)
+        osd("Pulling " + str(dbbparse.paths['root']) + " From Github.", color='GREEN', indent=1)
         try:
             g = git.cmd.Git(dbbparse.paths['root'])
             g.pull()
             return True
         except Exception as e:
-            osd("Pulling " + str(dbbparse.paths['root']) + "From Github Failed: " + str(e), color='RED', indent=1)
+            osd("Pulling " + str(dbbparse.paths['root']) + " From Github Failed: " + str(e), color='RED', indent=1)
     else:
-        osd("Pulling " + str(dbbparse.paths['root']) + "From Github Failed: Not a Valid Directory.", color='RED', indent=1)
+        osd("Pulling " + str(dbbparse.paths['root']) + " From Github Failed: Not a Valid Directory.", color='RED', indent=1)
     return False
 
 
 def gitpush(dbbparse):
     if os.path.isdir(dbbparse.paths['root']):
-        osd("Pushing " + str(dbbparse.paths['root']) + "To Github.", color='GREEN', indent=1)
+        osd("Pushing " + str(dbbparse.paths['root']) + " To Github.", color='GREEN', indent=1)
         try:
             g = git.cmd.Git(dbbparse.paths['root'])
             g.push()
             return True
         except Exception as e:
-            osd("Pulling " + str(dbbparse.paths['root']) + "To Github Failed: " + str(e), color='RED', indent=1)
+            osd("Pulling " + str(dbbparse.paths['root']) + " To Github Failed: " + str(e), color='RED', indent=1)
     else:
-        osd("Pulling " + str(dbbparse.paths['root']) + "To Github Failed: Not a Valid Directory.", color='RED', indent=1)
+        osd("Pulling " + str(dbbparse.paths['root']) + " To Github Failed: Not a Valid Directory.", color='RED', indent=1)
     return False
 
 
