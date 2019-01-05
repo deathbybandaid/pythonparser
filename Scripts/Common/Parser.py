@@ -138,8 +138,10 @@ File Structures
 
 def gitpull(dbbparse):
     osd(textarray='Pulling From Github.', color='YELLOW')
+
     osd("Pulling " + str(dbbparse.paths['root']) + " From Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
-    return
+    return True
+
     if os.path.isdir(dbbparse.paths['root']):
         osd("Pulling " + str(dbbparse.paths['root']) + " From Github.", color='GREEN', indent=1)
         try:
