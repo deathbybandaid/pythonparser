@@ -136,7 +136,7 @@ def filedownloader(dbbparse):
                             if line.startswith(tuple(["https://", "http://"])):
                                 dbbparse.lists[listtype][listindexlist]['urls'].append(line)
 
-                        osd(textarray=listindexlist + " has " + str(len(dbbparse.lists[listtype][listindexlist]['urls'])) + " list(s).", color='blue', indent=2)
+                        osd(textarray=listindexlist + " has " + str(len(dbbparse.lists[listtype][listindexlist]['urls'])) + " list(s).", color='purple', indent=2)
 
                         indexnum = 0
                         dbbparse.lists[listtype][listindexlist]['urlnums'] = dict()
