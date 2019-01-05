@@ -44,6 +44,8 @@ def mainfunction():
     if not internet():
         return
 
+    dbbparse = settings_get(dbbparse)
+
     # Final cleanup
     tempclean(dbbparse)
 
@@ -54,8 +56,11 @@ def mainfunction():
     print('\n' * 2)
 
     # push to github
-    if not gitpush(dbbparse):
-        return
+    if dbbparse.settings['github_push']:
+        if not gitpush(dbbparse):
+            return
+    else:
+        osd(textarray='Not Pushing to github, to change this, edit the config file.', color='purple')
 
 
 """
@@ -145,6 +150,28 @@ def osd(textarray=[], indent=0, color='BOLD'):
 """
 File Structures
 """
+
+
+def settings_get(dbbparse):
+
+    # Read dictionary from file, if not, enable an empty dict
+    filereadgood = True
+    inf = codecs.open(dbbparse.paths['settings'], "r", encoding='utf-8')
+    infread = inf.read()
+    try:
+        dict_from_file = eval(infread)
+    except Exception as e:
+        filereadgood = False
+        osd(textarray=["Error loading Settings File: %s" % (e)], color='red', indent=1)
+        dict_from_file = dict()
+    # Close File
+    inf.close()
+
+    dbbparse.settings = dict_from_file
+
+    print('\n' * 2)
+
+    return dbbparse
 
 
 def gitpull(dbbparse):
