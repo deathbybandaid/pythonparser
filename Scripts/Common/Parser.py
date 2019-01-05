@@ -169,9 +169,9 @@ def gitpull(dbbparse):
 
 def gitpush(dbbparse):
 
-    osd("Pushing To Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
-    print('\n' * 2)
-    return True
+    # osd("Pushing To Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
+    # print('\n' * 2)
+    # return True
 
     osd("Pushing " + str(dbbparse.paths['root']) + " To Github", color='GREEN', indent=1)
     if os.path.isdir(dbbparse.paths['root']):
