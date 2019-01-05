@@ -12,6 +12,13 @@ import codecs
 import time
 import socket
 import git
+import requests
+from fake_useragent import UserAgent
+
+
+# user agent and header
+ua = UserAgent()
+header = {'User-Agent': str(ua.chrome)}
 
 
 """
@@ -97,13 +104,15 @@ def internet(host="8.8.8.8", port=53, timeout=3):
 
 def filedownloader(dbbparse):
 
-    osd(textarray='Dowloading all TLD, Black and White Lists.', color='YELLOW')
+    osd(textarray='Dowloading all TLD, Black and White Lists, as well as saving mirrors.', color='YELLOW')
 
     for listtype in ["TLD", "Black", "White"]:
 
         dbbparse.lists[listtype] = dict()
 
         listindexdir = os.path.join(dbbparse.paths['listindexes'], listtype)
+
+        listmirrordir = os.path.join(dbbparse.paths['listindexes'], listtype)
 
         if os.path.isdir(listindexdir):
 
@@ -122,6 +131,33 @@ def filedownloader(dbbparse):
                         for line in lines:
                             if line.startswith(tuple(["https://", "http://"])):
                                 dbbparse.lists[listtype][listindexlist]['urls'].append(line)
+
+                        indexnum = 0
+                        dbbparse.lists[listtype][listindexlist]['urlnums'] = dict()
+
+                        for addr in dbbparse.lists[listtype][listindexlist]['urls']:
+
+                            listmirrorpath = os.path.join(listmirrordir, listindexlist + "." + indexnum)
+
+                            # try to get data
+                            try:
+                                page = requests.get(addr)
+                            except Exception as e:
+                                page = None
+
+                            if page and not str(page.status_code).startswith(tuple(["4", "5"])):
+
+                                pagecontents = page.content
+                                dbbparse.lists[listtype][listindexlist]['urlnums'][indexnum] = pagecontents
+
+                                # save mirror
+                                if not os.path.exists(listmirrorpath):
+                                    open(listmirrorpath, 'a').close()
+                                mirrorsave = open(listmirrorpath, "w")
+                                mirrorsave.write(str(pagecontents))
+                                mirrorsave.close()
+
+                            indexnum += 1
 
     return dbbparse
 
