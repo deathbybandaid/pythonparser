@@ -175,7 +175,7 @@ def gitpush(dbbparse):
         repo.git.add(update=True)
         committime = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         repo.index.commit("Update lists " + committime)
-        origin = repo.git.remote(name='origin')
+        origin = repo.remote(name='origin')
         origin.push()
         osd("Pushing " + str(dbbparse.paths['root']) + " To Github Success", color='green', indent=1)
         print('\n' * 2)
