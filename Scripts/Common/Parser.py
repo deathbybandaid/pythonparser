@@ -104,15 +104,16 @@ def internet(host="8.8.8.8", port=53, timeout=3):
 
 def filedownloader(dbbparse):
 
-    osd(textarray='Dowloading all TLD, Black and White Lists, as well as saving mirrors.', color='YELLOW')
-
     for listtype in ["TLD", "Black", "White"]:
+
+        osd(textarray='Dowloading all ' + listtype + ' Lists, as well as saving mirrors.', color='YELLOW')
+        dividerbar("blue")
 
         dbbparse.lists[listtype] = dict()
 
         listindexdir = os.path.join(dbbparse.paths['listindexes'], listtype)
 
-        listmirrordir = os.path.join(dbbparse.paths['listindexes'], listtype)
+        listmirrordir = os.path.join(dbbparse.paths['mirrors'], listtype)
 
         if os.path.isdir(listindexdir):
 
@@ -121,6 +122,9 @@ def filedownloader(dbbparse):
                 for listindexlist in os.listdir(listindexdir):
 
                     if listindexlist != "PERMANENT_PLACEHOLDER":
+
+                        osd(textarray='Dowloading all ' + listindexlist + ' Lists.', color='blue', indent=1)
+                        dividerbar("purple")
 
                         dbbparse.lists[listtype][listindexlist] = dict()
 
@@ -131,6 +135,8 @@ def filedownloader(dbbparse):
                         for line in lines:
                             if line.startswith(tuple(["https://", "http://"])):
                                 dbbparse.lists[listtype][listindexlist]['urls'].append(line)
+
+                        osd(textarray=listindexlist + " has " + str(len(dbbparse.lists[listtype][listindexlist]['urls'])) + " lists.", color='blue', indent=2)
 
                         indexnum = 0
                         dbbparse.lists[listtype][listindexlist]['urlnums'] = dict()
