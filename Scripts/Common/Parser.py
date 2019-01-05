@@ -7,6 +7,8 @@ import sys
 
 
 # other imports
+import json
+import codecs
 import time
 import socket
 import git
@@ -24,7 +26,9 @@ def mainfunction():
     # create dynamic class
     dbbparse = class_create('dbbparse')
 
-    dbbparse.timestart = time.time()
+    dbbparse.time = dict()
+
+    dbbparse.time['script_start'] = time.time()
 
     # save relative paths of interest
     dbbparse = relativepaths(dbbparse)
@@ -43,10 +47,14 @@ def mainfunction():
     # Final cleanup
     tempclean(dbbparse)
 
-    dbbparse.timeend = time.time()
+    dbbparse.time['script_end'] = time.time()
 
-    howlongcomplete = humanized_time(dbbparse.timeend - dbbparse.timestart)
+    howlongcomplete = humanized_time(dbbparse.time['script_end'] - dbbparse.time['script_start'])
     osd(textarray='Script took ' + howlongcomplete + ' to complete.', color='GREEN')
+
+    # push to github
+    if not gitpush(dbbparse):
+        return
 
 
 """
@@ -160,16 +168,26 @@ def gitpull(dbbparse):
 
 
 def gitpush(dbbparse):
+
+    osd("Pushing To Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
+    print('\n' * 2)
+    return True
+
+    osd("Pushing " + str(dbbparse.paths['root']) + " To Github", color='GREEN', indent=1)
     if os.path.isdir(dbbparse.paths['root']):
         osd("Pushing " + str(dbbparse.paths['root']) + " To Github.", color='GREEN', indent=1)
         try:
-            g = git.cmd.Git(dbbparse.paths['root'])
-            g.push()
+            repo = Repo(dbbparse.paths['root'])
+            repo = git.Repo(dbbparse.paths['root'])
+            repo.git.add(u=True)
+            repo.git.commit("my commit description")
+            repo.git.push("origin", "HEAD:refs/for/master")
+            print('\n' * 2)
             return True
         except Exception as e:
-            osd("Pulling " + str(dbbparse.paths['root']) + " To Github Failed: " + str(e), color='RED', indent=1)
+            osd("Pushing " + str(dbbparse.paths['root']) + " To Github Failed: " + str(e), color='RED', indent=1)
     else:
-        osd("Pulling " + str(dbbparse.paths['root']) + " To Github Failed: Not a Valid Directory.", color='RED', indent=1)
+        osd("Pushing " + str(dbbparse.paths['root']) + " To Github Failed: Not a Valid Directory.", color='RED', indent=1)
     return False
 
 
@@ -183,6 +201,10 @@ def relativepaths(dbbparse):
     dbbparse.paths['scripts'] = os.path.dirname(dbbparse.paths['current'])
 
     dbbparse.paths['root'] = os.path.dirname(dbbparse.paths['scripts'])
+
+    dbbparse.paths['installdir'] = os.path.dirname(dbbparse.paths['root'])
+
+    dbbparse.paths['settings'] = os.path.join(dbbparse.paths['installdir'], 'pythonparser.json')
 
     dbbparse.paths['temp'] = os.path.join(dbbparse.paths['root'], 'Temp')
 
