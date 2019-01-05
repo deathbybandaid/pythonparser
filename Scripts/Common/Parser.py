@@ -136,14 +136,16 @@ def filedownloader(dbbparse):
                             if line.startswith(tuple(["https://", "http://"])):
                                 dbbparse.lists[listtype][listindexlist]['urls'].append(line)
 
-                        osd(textarray=listindexlist + " has " + str(len(dbbparse.lists[listtype][listindexlist]['urls'])) + " list(s).", color='purple', indent=2)
+                        totalurls = str(len(dbbparse.lists[listtype][listindexlist]['urls']))
 
-                        indexnum = 0
+                        osd(textarray=listindexlist + " has " + str(totalurls) + " list(s).", color='purple', indent=2)
+
+                        indexnum = 1
                         dbbparse.lists[listtype][listindexlist]['urlnums'] = dict()
 
                         for addr in dbbparse.lists[listtype][listindexlist]['urls']:
 
-                            osd(textarray="Processing " + listindexlist + " list " + str(indexnum) + ".", color='purple', indent=3)
+                            osd(textarray="Processing " + listindexlist + " list " + str(indexnum) + " of " + str(totalurls) + ".", color='purple', indent=3)
 
                             listmirrorpath = os.path.join(listmirrordir, listindexlist + "." + str(indexnum))
 
@@ -164,9 +166,9 @@ def filedownloader(dbbparse):
                                 mirrorsave = open(listmirrorpath, "w")
                                 mirrorsave.write(str(pagecontents))
                                 mirrorsave.close()
-                                osd(textarray=listindexlist + " list " + str(indexnum) + " downloaded successfully.", color='purple', indent=4)
+                                osd(textarray=listindexlist + " list " + str(indexnum) + " of " + str(totalurls) + " downloaded successfully.", color='green', indent=4)
                             else:
-                                osd(textarray=listindexlist + " list " + str(indexnum) + " failed to download.", color='red', indent=4)
+                                osd(textarray=listindexlist + " list " + str(indexnum) + " of " + str(totalurls) + " failed to download.", color='red', indent=4)
 
                             indexnum += 1
 
