@@ -27,10 +27,6 @@ def mainfunction():
     # save relative paths of interest
     dbbparse = relativepaths(dbbparse)
 
-    # Logo
-    dbb_avatar(dbbparse)
-    print('\n' * 2)
-
     osd(textarray='Pulling From Github.', color='YELLOW')
     if not gitpull(dbbparse):
         return
