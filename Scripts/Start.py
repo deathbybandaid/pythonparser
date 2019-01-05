@@ -23,6 +23,11 @@ def mainfunction():
     dbb_avatar(dbbparse)
     print('\n' * 2)
 
+    depchecks(dbbparse)
+
+
+def depchecks(dbbparse):
+
     # pip Dependencies
     osd(textarray='Checking Dependencies.', color='YELLOW')
 
@@ -51,22 +56,26 @@ def mainfunction():
     print('\n' * 1)
 
     pipreqsdeps = []
-    piprequires = os.popen(str("pipreqs " + dbbparse.paths['scripts_common'] + " --print")).read().split('\n')
-    for pypipreq in piprequires:
-        if pypipreq not in ['']:
-            if "=" in pypipreq:
-                pypipreq = pypipreq.split("=")[0]
-            if ">" in pypipreq:
-                pypipreq = pypipreq.split(">")[0]
-            if "<" in pypipreq:
-                pypipreq = pypipreq.split("<")[0]
-            pipreqsdeps.append(pypipreq)
+    os.popen(str("pipreqs " + dbbparse.paths['scripts_common'] + " --force"))
+    if os.path.exists(dbbparse.paths['reqtxt']):
+        piprequires = [line.rstrip('\n') for line in open(os.path.join(dbbparse.paths['reqtxt']))]
+        for pypipreq in piprequires:
+            if pypipreq not in ['']:
+                if "=" in pypipreq:
+                    pypipreq = pypipreq.split("=")[0]
+                if ">" in pypipreq:
+                    pypipreq = pypipreq.split(">")[0]
+                if "<" in pypipreq:
+                    pypipreq = pypipreq.split("<")[0]
+                pipreqsdeps.append(pypipreq)
+    else:
+        return osd(textarray='pipreqs failed to generate a list!', color='RED', indent=3)
 
     if pipreqsdeps != []:
         for pipdep in pipreqsdeps:
             osd(textarray='Checking ' + pipdep + '.', color='YELLOW', indent=1)
             try:
-                __import__('pipreqs')
+                __import__(pipdep)
                 preinstalled = True
             except ImportError:
                 preinstalled = False
@@ -83,6 +92,8 @@ def mainfunction():
         print('\n' * 2)
 
     osd(textarray='Script is ready to start!', color='blue')
+
+    os.system(dbbparse.paths['parser'])
 
 
 """
@@ -118,6 +129,7 @@ def osd(textarray=[], indent=0, color='BOLD'):
                 indent = 1
             indentstr = "     " * indent
         print indentstr + coloreval + entry + endcolor
+    sys.stdout.flush()
 
 
 """
@@ -135,6 +147,10 @@ def relativepaths(dbbparse):
     dbbparse.paths['root'] = os.path.dirname(dbbparse.paths['scripts'])
 
     dbbparse.paths['temp'] = os.path.join(dbbparse.paths['root'], 'Temp')
+
+    dbbparse.paths['reqtxt'] = os.path.join(dbbparse.paths['scripts_common'], 'requirements.txt')
+
+    dbbparse.paths['parser'] = os.path.join(dbbparse.paths['scripts_common'], 'parser.py')
 
     return dbbparse
 
