@@ -51,6 +51,7 @@ def mainfunction():
 
     howlongcomplete = humanized_time(dbbparse.time['script_end'] - dbbparse.time['script_start'])
     osd(textarray='Script took ' + howlongcomplete + ' to complete.', color='GREEN')
+    print('\n' * 2)
 
     # push to github
     if not gitpush(dbbparse):
@@ -149,12 +150,10 @@ File Structures
 def gitpull(dbbparse):
     osd(textarray='Pulling From Github.', color='YELLOW')
 
-    osd("Pulling " + str(dbbparse.paths['root']) + " From Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
     print('\n' * 2)
     return True
 
     if os.path.isdir(dbbparse.paths['root']):
-        osd("Pulling " + str(dbbparse.paths['root']) + " From Github.", color='GREEN', indent=1)
         try:
             g = git.cmd.Git(dbbparse.paths['root'])
             g.pull()
@@ -169,15 +168,11 @@ def gitpull(dbbparse):
 
 def gitpush(dbbparse):
 
-    # osd("Pushing To Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
-    # print('\n' * 2)
-    # return True
-
-    osd("Pushing To Github", color='GREEN', indent=1)
+    osd("Pushing To Github", color='GREEN')
     try:
         repo = git.Repo(dbbparse.paths['root'])
         repo.git.add(update=True)
-        repo.index.commit("my commit description")
+        repo.index.commit("Update lists " + str(time.time()))
         repo.git.push("origin", "HEAD:refs/for/master")
         print('\n' * 2)
         return True
