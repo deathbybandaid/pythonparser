@@ -158,13 +158,16 @@ def filedownloader(dbbparse):
                             if page and not str(page.status_code).startswith(tuple(["4", "5"])):
 
                                 pagecontents = page.content
+                                lines = [line.rstrip('\n') for line in pagecontents]
                                 dbbparse.lists[listtype][listindexlist]['urlnums'][indexnum] = pagecontents
 
                                 # save mirror
                                 if not os.path.exists(listmirrorpath):
                                     open(listmirrorpath, 'a').close()
                                 mirrorsave = open(listmirrorpath, "w")
-                                mirrorsave.write(str(pagecontents))
+                                for line in lines:
+                                    mirrorsave.write(str("%s\r\n" % line.strip()))
+                                # mirrorsave.write(str(pagecontents))
                                 mirrorsave.close()
                                 osd(textarray=listindexlist + " list " + str(indexnum) + " of " + str(totalurls) + " downloaded successfully.", color='green', indent=4)
                             else:
@@ -404,6 +407,4 @@ class bcolors:
 """
 Nothing else below this line
 """
-
-
-mainfunction()
+
