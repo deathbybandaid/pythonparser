@@ -160,9 +160,8 @@ def filedownloader(dbbparse):
                                 compatmode = []
                                 pagecontents = page.content
                                 for line in pagecontents:
-                                    compatmode.append(str(line.replace("\r\n", "\n")))
-                                for line in pagecontents:
-                                    compatmode.append(str(line.replace("\r", "\n")))
+                                    line = line.replace('\r\n', '\n').replace('\r', '\n')
+                                    compatmode = str(line)
                                 pagecontents = compatmode
                                 dbbparse.lists[listtype][listindexlist]['urlnums'][indexnum] = pagecontents
 
