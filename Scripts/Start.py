@@ -82,6 +82,9 @@ def settings_check(dbbparse):
         print('\n' * 1)
     dict_from_file["settings_checked"] = time.time()
 
+    if "github_push" not in dict_from_file.keys():
+        dict_from_file["github_push"] = False
+
     filesave = open(dbbparse.paths['settings'], "w")
     filesave.write(str(dict_from_file))
     filesave.close()
