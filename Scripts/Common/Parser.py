@@ -173,7 +173,8 @@ def gitpush(dbbparse):
     try:
         repo = git.Repo(dbbparse.paths['root'])
         repo.git.add(update=True)
-        repo.index.commit("Update lists " + str(time.time()))
+        committime = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+        repo.index.commit("Update lists " + committime)
         repo.git.push("origin", "HEAD:refs/for/master")
         osd("Pushing " + str(dbbparse.paths['root']) + " To Github Success", color='green', indent=1)
         print('\n' * 2)
