@@ -176,23 +176,21 @@ def settings_get(dbbparse):
 
 def gitpull(dbbparse):
     osd(textarray='Pulling From Github.', color='YELLOW')
-    if os.path.isdir(dbbparse.paths['root']):
-        try:
-            g = git.cmd.Git(dbbparse.paths['root'])
-            g.pull()
-            osd("Pulling " + str(dbbparse.paths['root']) + " From Github Success", color='green', indent=1)
-            print('\n' * 2)
-            return True
-        except Exception as e:
-            osd("Pulling " + str(dbbparse.paths['root']) + " From Github Failed: " + str(e), color='RED', indent=1)
-    else:
-        osd("Pulling " + str(dbbparse.paths['root']) + " From Github Failed: Not a Valid Directory.", color='RED', indent=1)
+    try:
+        g = git.cmd.Git(dbbparse.paths['root'])
+        g.pull()
+        osd("Pulling " + str(dbbparse.paths['root']) + " From Github Success", color='green', indent=1)
+        print('\n' * 2)
+        return True
+    except Exception as e:
+        osd("Pulling " + str(dbbparse.paths['root']) + " From Github Failed: " + str(e), color='RED', indent=1)
+    print('\n' * 2)
     return False
 
 
 def gitpush(dbbparse):
 
-    osd("Pushing To Github", color='GREEN')
+    osd("Pushing To Github", color='yellow')
     try:
         repo = git.Repo(dbbparse.paths['root'])
         repo.git.add(update=True)
@@ -205,6 +203,7 @@ def gitpush(dbbparse):
         return True
     except Exception as e:
         osd("Pushing " + str(dbbparse.paths['root']) + " To Github Failed: " + str(e), color='RED', indent=2)
+        print('\n' * 2)
     return False
 
 
