@@ -137,11 +137,11 @@ def filedownloader(dbbparse):
 
                         for addr in dbbparse.lists[listtype][listindexlist]['urls']:
 
-                            listmirrorpath = os.path.join(listmirrordir, listindexlist + "." + indexnum)
+                            listmirrorpath = os.path.join(listmirrordir, listindexlist + "." + str(indexnum))
 
                             # try to get data
                             try:
-                                page = requests.get(addr)
+                                page = requests.get(addr, headers=header)
                             except Exception as e:
                                 page = None
 

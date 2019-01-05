@@ -1,1 +1,3 @@
+fake_useragent==0.1.11
+requests==2.21.0
 GitPython==2.1.11
