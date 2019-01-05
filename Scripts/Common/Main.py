@@ -5,6 +5,7 @@
 import os
 import sys
 
+
 # other imports
 import time
 import socket
@@ -20,6 +21,8 @@ def mainfunction():
 
     # create dynamic class
     dbbparse = class_create('dbbparse')
+
+    dbbparse.timestart = time.time()
 
     # save relative paths of interest
     dbbparse = relativepaths(dbbparse)
@@ -40,7 +43,7 @@ def mainfunction():
     # Check internet connection
     osd(textarray='Checking for internet connection.', color='YELLOW')
     if not internet():
-        osd(textarray='Internet appears to be down!', color='RED')
+        osd(textarray='Internet appears to be down!', color='RED', indent=1)
         return
     osd(textarray='Internet connection success!!', indent=1, color='GREEN')
     print('\n' * 2)
@@ -49,10 +52,15 @@ def mainfunction():
     tempclean(dbbparse)
     print('\n' * 2)
 
-    osd(textarray='Pushing To Github.', color='YELLOW')
-    if not gitpush(dbbparse):
-        return
-    print('\n' * 2)
+    dbbparse.timeend = time.time()
+
+    howlongcomplete = humanized_time(dbbparse.timeend - dbbparse.timestart)
+    print howlongcomplete
+
+    # osd(textarray='Pushing To Github.', color='YELLOW')
+    # if not gitpush(dbbparse):
+    #    return
+    # print('\n' * 2)
 
 
 """
@@ -78,6 +86,37 @@ def dbb_avatar(dbbparse):
     filepath = os.path.join(dbbparse.paths['scripts_common'], 'avatar.txt')
     lines = [line.rstrip('\n') for line in open(filepath)]
     osd(textarray=lines)
+
+
+def humanized_time(countdownseconds):
+    time = float(countdownseconds)
+    if time == 0:
+        return "just now"
+    year = time // (365 * 24 * 3600)
+    time = time % (365 * 24 * 3600)
+    day = time // (24 * 3600)
+    time = time % (24 * 3600)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = None
+    timearray = ['year', 'day', 'hour', 'minute', 'second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            if displaymsg:
+                displaymsg = str(displaymsg + " " + str(int(currenttimevar)) + " " + timetype)
+            else:
+                displaymsg = str(str(int(currenttimevar)) + " " + timetype)
+    if not displaymsg:
+        return "just now"
+    return displaymsg
 
 
 def osd(textarray=[], indent=0, color='BOLD'):
