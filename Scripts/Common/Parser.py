@@ -157,7 +157,7 @@ def gitpull(dbbparse):
         try:
             g = git.cmd.Git(dbbparse.paths['root'])
             g.pull()
-            osd("Pulling " + str(dbbparse.paths['root']) + " From Github Success: " + str(e), color='green', indent=1)
+            osd("Pulling " + str(dbbparse.paths['root']) + " From Github Success: ", color='green', indent=1)
             print('\n' * 2)
             return True
         except Exception as e:
@@ -175,7 +175,7 @@ def gitpush(dbbparse):
         repo.git.add(update=True)
         repo.index.commit("Update lists " + str(time.time()))
         repo.git.push("origin", "HEAD:refs/for/master")
-        osd("Pushing " + str(dbbparse.paths['root']) + " To Github Success: " + str(e), color='green', indent=1)
+        osd("Pushing " + str(dbbparse.paths['root']) + " To Github Success: ", color='green', indent=1)
         print('\n' * 2)
         return True
     except Exception as e:
