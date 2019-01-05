@@ -292,7 +292,7 @@ def gitpush(dbbparse):
     osd("Pushing To Github", color='yellow')
     try:
         repo = git.Repo(dbbparse.paths['root'])
-        repo.git.add(update=True)
+        repo.git.add('--all')
         committime = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         repo.index.commit("Update lists " + committime)
         origin = repo.remote(name='origin')
