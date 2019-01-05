@@ -173,21 +173,16 @@ def gitpush(dbbparse):
     # print('\n' * 2)
     # return True
 
-    osd("Pushing " + str(dbbparse.paths['root']) + " To Github", color='GREEN', indent=1)
-    if os.path.isdir(dbbparse.paths['root']):
-        osd("Pushing " + str(dbbparse.paths['root']) + " To Github.", color='GREEN', indent=1)
-        try:
-            repo = Repo(dbbparse.paths['root'])
-            repo = git.Repo(dbbparse.paths['root'])
-            repo.git.add(u=True)
-            repo.git.commit("my commit description")
-            repo.git.push("origin", "HEAD:refs/for/master")
-            print('\n' * 2)
-            return True
-        except Exception as e:
-            osd("Pushing " + str(dbbparse.paths['root']) + " To Github Failed: " + str(e), color='RED', indent=1)
-    else:
-        osd("Pushing " + str(dbbparse.paths['root']) + " To Github Failed: Not a Valid Directory.", color='RED', indent=1)
+    osd("Pushing To Github", color='GREEN', indent=1)
+    try:
+        repo = git.Repo(dbbparse.paths['root'])
+        repo.git.add(update=True)
+        repo.index.commit("my commit description")
+        repo.git.push("origin", "HEAD:refs/for/master")
+        print('\n' * 2)
+        return True
+    except Exception as e:
+        osd("Pushing " + str(dbbparse.paths['root']) + " To Github Failed: " + str(e), color='RED', indent=2)
     return False
 
 
