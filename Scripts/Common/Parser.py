@@ -132,18 +132,6 @@ def filedownloader(dbbparse):
 
                         lines = [line.rstrip('\n') for line in open(os.path.join(listindexdir, listindexlist))]
 
-                        if listindexlist.endswith(tuple([".lst", ".list"])):
-                            newfilename = str(listindexlist.split(".")[:-1][0])
-                            newpath = os.path.join(listindexdir, newfilename)
-                            os.remove(os.path.join(listindexdir, listindexlist))
-
-                            if not os.path.exists(newpath):
-                                open(newpath, 'a').close()
-                            resave = open(newpath, "w")
-                            for line in lines:
-                                resave.write(str(line))
-                            resave.close()
-
                         for line in lines:
                             if line.startswith(tuple(["https://", "http://"])):
                                 dbbparse.lists[listtype][listindexlist]['urls'].append(line)
