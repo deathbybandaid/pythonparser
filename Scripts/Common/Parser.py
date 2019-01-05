@@ -143,6 +143,8 @@ def filedownloader(dbbparse):
 
                         for addr in dbbparse.lists[listtype][listindexlist]['urls']:
 
+                            osd(textarray="Processing " + listindexlist + " list " + str(indexnum) + ".", color='purple', indent=3)
+
                             listmirrorpath = os.path.join(listmirrordir, listindexlist + "." + str(indexnum))
 
                             # try to get data
@@ -162,6 +164,9 @@ def filedownloader(dbbparse):
                                 mirrorsave = open(listmirrorpath, "w")
                                 mirrorsave.write(str(pagecontents))
                                 mirrorsave.close()
+                                osd(textarray=listindexlist + " list " + str(indexnum) + " downloaded successfully.", color='purple', indent=4)
+                            else:
+                                osd(textarray=listindexlist + " list " + str(indexnum) + " failed to download.", color='red', indent=4)
 
                             indexnum += 1
 
