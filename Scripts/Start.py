@@ -23,8 +23,10 @@ def mainfunction():
     dbb_avatar(dbbparse)
     print('\n' * 2)
 
+    dividerbar()
     depchecks(dbbparse)
 
+    dividerbar()
     settings_check(dbbparse)
 
     osd(textarray='Script is ready to start!', color='blue')
@@ -187,6 +189,11 @@ def dbb_avatar(dbbparse):
     filepath = os.path.join(dbbparse.paths['scripts_common'], 'avatar.txt')
     lines = [line.rstrip('\n') for line in open(filepath)]
     osd(textarray=lines)
+
+
+def dividerbar(color='BOLD'):
+
+    osd(textarray=["___________________________________________________________"], color='BOLD')
 
 
 def osd(textarray=[], indent=0, color='BOLD'):

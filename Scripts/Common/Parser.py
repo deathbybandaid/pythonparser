@@ -34,21 +34,26 @@ def mainfunction():
     dbbparse = relativepaths(dbbparse)
 
     # pull from github
+    dividerbar()
     if not gitpull(dbbparse):
         return
 
     # starting cleanup
+    dividerbar()
     tempclean(dbbparse)
 
     # Check internet connection
+    dividerbar()
     if not internet():
         return
 
     dbbparse = settings_get(dbbparse)
 
     # Final cleanup
+    dividerbar()
     tempclean(dbbparse)
 
+    dividerbar()
     dbbparse.time['script_end'] = time.time()
 
     howlongcomplete = humanized_time(dbbparse.time['script_end'] - dbbparse.time['script_start'])
@@ -56,6 +61,7 @@ def mainfunction():
     print('\n' * 2)
 
     # push to github
+    dividerbar()
     if dbbparse.settings['github_push']:
         if not gitpush(dbbparse):
             return
@@ -121,6 +127,11 @@ def humanized_time(countdownseconds):
     if not displaymsg:
         return "0 seconds"
     return displaymsg
+
+
+def dividerbar(color='BOLD'):
+
+    osd(textarray=["___________________________________________________________"], color='BOLD')
 
 
 def osd(textarray=[], indent=0, color='BOLD'):
