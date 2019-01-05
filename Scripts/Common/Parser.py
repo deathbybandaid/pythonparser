@@ -176,10 +176,6 @@ def settings_get(dbbparse):
 
 def gitpull(dbbparse):
     osd(textarray='Pulling From Github.', color='YELLOW')
-
-    print('\n' * 2)
-    return True
-
     if os.path.isdir(dbbparse.paths['root']):
         try:
             g = git.cmd.Git(dbbparse.paths['root'])
