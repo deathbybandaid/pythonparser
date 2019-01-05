@@ -44,7 +44,7 @@ def mainfunction():
     dbbparse.timeend = time.time()
 
     howlongcomplete = humanized_time(dbbparse.timeend - dbbparse.timestart)
-    print howlongcomplete
+    osd(textarray='Script took ' + howlongcomplete + ' to complete.', color='GREEN')
 
 
 """
@@ -79,7 +79,7 @@ def dbb_avatar(dbbparse):
 def humanized_time(countdownseconds):
     time = float(countdownseconds)
     if time == 0:
-        return "just now"
+        return "0 seconds"
     year = time // (365 * 24 * 3600)
     time = time % (365 * 24 * 3600)
     day = time // (24 * 3600)
@@ -103,7 +103,7 @@ def humanized_time(countdownseconds):
             else:
                 displaymsg = str(str(int(currenttimevar)) + " " + timetype)
     if not displaymsg:
-        return "just now"
+        return "0 seconds"
     return displaymsg
 
 
@@ -140,6 +140,7 @@ def gitpull(dbbparse):
     osd(textarray='Pulling From Github.', color='YELLOW')
 
     osd("Pulling " + str(dbbparse.paths['root']) + " From Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
+    print('\n' * 2)
     return True
 
     if os.path.isdir(dbbparse.paths['root']):
@@ -173,9 +174,11 @@ def gitpush(dbbparse):
 def relativepaths(dbbparse):
     dbbparse.paths = dict()
 
-    dbbparse.paths['scripts'] = os.path.split(os.path.abspath(os.path.realpath(sys.argv[0])))[0]
+    dbbparse.paths['current'] = os.path.split(os.path.abspath(os.path.realpath(sys.argv[0])))[0]
 
-    dbbparse.paths['scripts_common'] = os.path.join(dbbparse.paths['scripts'], 'Common')
+    dbbparse.paths['scripts_common'] = dbbparse.paths['current']
+
+    dbbparse.paths['scripts'] = os.path.dirname(dbbparse.paths['current'])
 
     dbbparse.paths['root'] = os.path.dirname(dbbparse.paths['scripts'])
 
@@ -195,13 +198,13 @@ def tempclean(dbbparse):
             os.remove(os.path.join(root, name))
         for name in dirs:
             os.rmdir(os.path.join(root, name))
-    placeholderfile = open(os.path.join(dbbparse.paths['temp'], 'PERMANENT_PLACEHOLDER'), 'r+')
-    placeholderfile.close()
+    placeholderfile = os.path.join(dbbparse.paths['temp'], 'PERMANENT_PLACEHOLDER')
+    open(placeholderfile, 'a').close()
     for tempsub in ['Bak', 'Processing']:
         tempsubdir = os.path.join(dbbparse.paths['temp'], tempsub)
         os.mkdir(tempsubdir)
-        placeholderfile = open(os.path.join(tempsubdir, 'PERMANENT_PLACEHOLDER'), 'r+')
-        placeholderfile.close()
+        placeholderfile = os.path.join(tempsubdir, 'PERMANENT_PLACEHOLDER')
+        open(placeholderfile, 'a').close()
     print('\n' * 2)
 
 

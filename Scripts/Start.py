@@ -39,15 +39,25 @@ def depchecks(dbbparse):
     osd(textarray='pip already installed.', color='green', indent=2)
     print('\n' * 1)
 
+    from pip._internal import main as pipmain
+    from pip._internal.utils.misc import get_installed_distributions as getpiplist
+
+    pipinstalled = []
+    pipinstalledlist = getpiplist()
+    pipinstalledlist = sorted(["%s==%s" % (i.key, i.version) for i in pipinstalledlist])
+    for pipitem in pipinstalledlist:
+        if pipitem not in ['']:
+            if "=" in pipitem:
+                pipitem = pipitem.split("=")[0]
+            if ">" in pipitem:
+                pipitem = pipitem.split(">")[0]
+            if "<" in pipitem:
+                pipitem = pipitem.split("<")[0]
+            pipinstalled.append(pipitem)
+
     osd(textarray='Checking pipreqs.', color='YELLOW', indent=1)
-    try:
-        __import__('pipreqs')
-        preinstalled = True
-    except ImportError:
-        preinstalled = False
-    if not preinstalled:
+    if 'pipreqs' not in [x.lower() for x in pipinstalled]:
         osd(textarray='pipreqs not installed, installing now.', color='blue', indent=2)
-        from pip._internal import main as pipmain
         pipmain(['install', 'pipreqs'])
     else:
         osd(textarray='pipreqs already installed.', color='green', indent=2)
@@ -74,14 +84,8 @@ def depchecks(dbbparse):
     if pipreqsdeps != []:
         for pipdep in pipreqsdeps:
             osd(textarray='Checking ' + pipdep + '.', color='YELLOW', indent=1)
-            try:
-                __import__(str(pipdep))
-                preinstalled = True
-            except ImportError:
-                preinstalled = False
-            if not preinstalled:
+            if pipdep.lower() not in [x.lower() for x in pipinstalled]:
                 osd(textarray=pipdep + ' not installed, installing now.', color='blue', indent=2)
-                from pip._internal import main as pipmain
                 pipmain(['install', pipdep])
             else:
                 osd(textarray=pipdep + ' already installed.', color='green', indent=2)
@@ -92,6 +96,7 @@ def depchecks(dbbparse):
         print('\n' * 2)
 
     osd(textarray='Script is ready to start!', color='blue')
+    print('\n' * 2)
 
     os.system('python ' + dbbparse.paths['parser'])
 
@@ -140,7 +145,8 @@ File Structures
 def relativepaths(dbbparse):
     dbbparse.paths = dict()
 
-    dbbparse.paths['scripts'] = os.path.split(os.path.abspath(os.path.realpath(sys.argv[0])))[0]
+    dbbparse.paths['current'] = os.path.split(os.path.abspath(os.path.realpath(sys.argv[0])))[0]
+    dbbparse.paths['scripts'] = dbbparse.paths['current']
 
     dbbparse.paths['scripts_common'] = os.path.join(dbbparse.paths['scripts'], 'Common')
 
