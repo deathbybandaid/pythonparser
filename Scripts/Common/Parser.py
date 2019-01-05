@@ -42,6 +42,9 @@ def mainfunction():
     dividerbar()
     tempclean(dbbparse)
 
+    # Run logs
+    logsclean(dbbparse)
+
     # Check internet connection
     dividerbar()
     if not internet():
@@ -235,6 +238,8 @@ def relativepaths(dbbparse):
 
     dbbparse.paths['temp'] = os.path.join(dbbparse.paths['root'], 'Temp')
 
+    dbbparse.paths['logs'] = os.path.join(dbbparse.paths['root'], 'Logs')
+
     dbbparse.paths['reqtxt'] = os.path.join(dbbparse.paths['scripts_common'], 'requirements.txt')
 
     dbbparse.paths['parser'] = os.path.join(dbbparse.paths['scripts_common'], 'parser.py')
@@ -257,6 +262,22 @@ def tempclean(dbbparse):
         placeholderfile = os.path.join(tempsubdir, 'PERMANENT_PLACEHOLDER')
         open(placeholderfile, 'a').close()
     print('\n' * 2)
+
+
+def logsclean(dbbparse):
+    osd(textarray='Cleaning Logs Directory.', color='YELLOW')
+    for root, dirs, files in os.walk(dbbparse.paths['logs'], topdown=False):
+        for name in files:
+            os.remove(os.path.join(root, name))
+        for name in dirs:
+            os.rmdir(os.path.join(root, name))
+    placeholderfile = os.path.join(dbbparse.paths['logs'], 'PERMANENT_PLACEHOLDER')
+    open(placeholderfile, 'a').close()
+    print('\n' * 2)
+
+
+def logswrite():
+    dd = 5
 
 
 """

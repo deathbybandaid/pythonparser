@@ -242,6 +242,8 @@ def relativepaths(dbbparse):
 
     dbbparse.paths['temp'] = os.path.join(dbbparse.paths['root'], 'Temp')
 
+    dbbparse.paths['logs'] = os.path.join(dbbparse.paths['root'], 'Logs')
+
     dbbparse.paths['reqtxt'] = os.path.join(dbbparse.paths['scripts_common'], 'requirements.txt')
 
     dbbparse.paths['parser'] = os.path.join(dbbparse.paths['scripts_common'], 'parser.py')
