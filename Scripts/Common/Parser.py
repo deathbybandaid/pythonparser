@@ -19,6 +19,8 @@ This is the central script
 
 def mainfunction():
 
+    print('\n' * 2)
+
     # create dynamic class
     dbbparse = class_create('dbbparse')
 

@@ -42,6 +42,7 @@ def depchecks(dbbparse):
     from pip._internal import main as pipmain
     from pip._internal.utils.misc import get_installed_distributions as getpiplist
 
+    osd(textarray='Generating list of installed pip modules.', color='purple', indent=1)
     pipinstalled = []
     pipinstalledlist = getpiplist()
     pipinstalledlist = sorted(["%s==%s" % (i.key, i.version) for i in pipinstalledlist])
@@ -54,6 +55,7 @@ def depchecks(dbbparse):
             if "<" in pipitem:
                 pipitem = pipitem.split("<")[0]
             pipinstalled.append(pipitem)
+    print('\n' * 1)
 
     osd(textarray='Checking pipreqs.', color='YELLOW', indent=1)
     if 'pipreqs' not in [x.lower() for x in pipinstalled]:
@@ -62,7 +64,8 @@ def depchecks(dbbparse):
     else:
         osd(textarray='pipreqs already installed.', color='green', indent=2)
     import pipreqs
-    osd(textarray='pipreqs is generating a list of dependencies.', color='purple', indent=3)
+    print('\n' * 1)
+    osd(textarray='pipreqs is generating a list of dependencies.', color='purple', indent=1)
     print('\n' * 1)
 
     pipreqsdeps = []
@@ -96,7 +99,6 @@ def depchecks(dbbparse):
         print('\n' * 2)
 
     osd(textarray='Script is ready to start!', color='blue')
-    print('\n' * 2)
 
     os.system('python ' + dbbparse.paths['parser'])
 
