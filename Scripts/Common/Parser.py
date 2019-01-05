@@ -138,10 +138,7 @@ def filedownloader(dbbparse):
 
                         totalurls = len(dbbparse.lists[listtype][listindexlist]['urls'])
 
-                        if totalurls > 1:
-                            osd(textarray=listindexlist + " has " + str(totalurls) + " list(s).", color='purple', indent=2)
-                        else:
-                            osd(textarray=listindexlist + " has " + str(totalurls) + " list.", color='purple', indent=2)
+                        osd(textarray=listindexlist + " has " + str(totalurls) + " list(s).", color='purple', indent=2)
 
                         indexnum = 1
                         dbbparse.lists[listtype][listindexlist]['urlnums'] = dict()
