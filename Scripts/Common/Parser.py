@@ -52,6 +52,11 @@ def mainfunction():
 
     dbbparse = settings_get(dbbparse)
 
+    dbbparse.lists = dict()
+
+    # Download Files
+    dbbparse = filedownloader(dbbparse)
+
     # Final cleanup
     dividerbar()
     tempclean(dbbparse)
@@ -88,6 +93,37 @@ def internet(host="8.8.8.8", port=53, timeout=3):
     except Exception as ex:
         osd(textarray='Internet appears to be down!', color='RED', indent=1)
         return False
+
+
+def filedownloader(dbbparse):
+
+    osd(textarray='Dowloading all TLD, Black and White Lists.', color='YELLOW')
+
+    for listtype in ["TLD", "Black", "White"]:
+
+        dbbparse.lists[listtype] = dict()
+
+        listindexdir = os.path.join(dbbparse.paths['listindexes'], listtype)
+
+        if os.path.isdir(listindexdir):
+
+            if len(os.listdir(listindexdir)) > 0:
+
+                for listindexlist in os.listdir(listindexdir):
+
+                    if listindexlist != "PERMANENT_PLACEHOLDER":
+
+                        dbbparse.lists[listtype][listindexlist] = dict()
+
+                        dbbparse.lists[listtype][listindexlist]['urls'] = []
+
+                        lines = [line.rstrip('\n') for line in open(os.path.join(listindexdir, listindexlist))]
+
+                        for line in lines:
+                            if line.startswith(tuple(["https://", "http://"])):
+                                dbbparse.lists[listtype][listindexlist]['urls'].append(line)
+
+    return dbbparse
 
 
 """
@@ -243,6 +279,10 @@ def relativepaths(dbbparse):
     dbbparse.paths['reqtxt'] = os.path.join(dbbparse.paths['scripts_common'], 'requirements.txt')
 
     dbbparse.paths['parser'] = os.path.join(dbbparse.paths['scripts_common'], 'parser.py')
+
+    dbbparse.paths['mirrors'] = os.path.join(dbbparse.paths['root'], 'Mirrors')
+    dbbparse.paths['subscribable'] = os.path.join(dbbparse.paths['root'], 'Subscribable')
+    dbbparse.paths['listindexes'] = os.path.join(dbbparse.paths['root'], 'listindexes')
 
     return dbbparse
 

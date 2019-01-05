@@ -248,6 +248,10 @@ def relativepaths(dbbparse):
 
     dbbparse.paths['parser'] = os.path.join(dbbparse.paths['scripts_common'], 'parser.py')
 
+    dbbparse.paths['mirrors'] = os.path.join(dbbparse.paths['root'], 'Mirrors')
+    dbbparse.paths['subscribable'] = os.path.join(dbbparse.paths['root'], 'Subscribable')
+    dbbparse.paths['listindexes'] = os.path.join(dbbparse.paths['root'], 'listindexes')
+
     return dbbparse
 
 
