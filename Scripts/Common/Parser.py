@@ -106,8 +106,8 @@ def filedownloader(dbbparse):
 
     for listtype in ["TLD", "Black", "White"]:
 
-        osd(textarray='Dowloading all ' + listtype + ' Lists, as well as saving mirrors.', color='YELLOW')
         dividerbar("blue")
+        osd(textarray='Dowloading all ' + listtype + ' Lists, as well as saving mirrors.', color='YELLOW')
 
         dbbparse.lists[listtype] = dict()
 
@@ -123,8 +123,8 @@ def filedownloader(dbbparse):
 
                     if listindexlist != "PERMANENT_PLACEHOLDER":
 
-                        osd(textarray='Dowloading all ' + listindexlist + ' Lists.', color='blue', indent=1)
                         dividerbar("purple")
+                        osd(textarray='Dowloading all ' + listindexlist + ' Lists.', color='blue', indent=1)
 
                         dbbparse.lists[listtype][listindexlist] = dict()
 
@@ -136,7 +136,7 @@ def filedownloader(dbbparse):
                             if line.startswith(tuple(["https://", "http://"])):
                                 dbbparse.lists[listtype][listindexlist]['urls'].append(line)
 
-                        osd(textarray=listindexlist + " has " + str(len(dbbparse.lists[listtype][listindexlist]['urls'])) + " lists.", color='blue', indent=2)
+                        osd(textarray=listindexlist + " has " + str(len(dbbparse.lists[listtype][listindexlist]['urls'])) + " list(s).", color='blue', indent=2)
 
                         indexnum = 0
                         dbbparse.lists[listtype][listindexlist]['urlnums'] = dict()
