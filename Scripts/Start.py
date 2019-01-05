@@ -75,7 +75,7 @@ def depchecks(dbbparse):
         for pipdep in pipreqsdeps:
             osd(textarray='Checking ' + pipdep + '.', color='YELLOW', indent=1)
             try:
-                __import__(pipdep)
+                __import__(str(pipdep))
                 preinstalled = True
             except ImportError:
                 preinstalled = False
@@ -93,7 +93,7 @@ def depchecks(dbbparse):
 
     osd(textarray='Script is ready to start!', color='blue')
 
-    os.system(dbbparse.paths['parser'])
+    os.system('python ' + dbbparse.paths['parser'])
 
 
 """

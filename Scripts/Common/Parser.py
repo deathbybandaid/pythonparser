@@ -27,36 +27,24 @@ def mainfunction():
     # save relative paths of interest
     dbbparse = relativepaths(dbbparse)
 
-    osd(textarray='Pulling From Github.', color='YELLOW')
+    # pull from github
     if not gitpull(dbbparse):
         return
-    print('\n' * 2)
 
-    osd(textarray='Cleaning Temp Directory.', color='YELLOW')
+    # starting cleanup
     tempclean(dbbparse)
-    print('\n' * 2)
 
     # Check internet connection
-    osd(textarray='Checking for internet connection.', color='YELLOW')
     if not internet():
-        osd(textarray='Internet appears to be down!', color='RED', indent=1)
         return
-    osd(textarray='Internet connection success!!', indent=1, color='GREEN')
-    print('\n' * 2)
 
-    osd(textarray='Cleaning Temp Directory.', color='YELLOW')
+    # Final cleanup
     tempclean(dbbparse)
-    print('\n' * 2)
 
     dbbparse.timeend = time.time()
 
     howlongcomplete = humanized_time(dbbparse.timeend - dbbparse.timestart)
     print howlongcomplete
-
-    # osd(textarray='Pushing To Github.', color='YELLOW')
-    # if not gitpush(dbbparse):
-    #    return
-    # print('\n' * 2)
 
 
 """
@@ -65,11 +53,15 @@ Network Functions
 
 
 def internet(host="8.8.8.8", port=53, timeout=3):
+    osd(textarray='Checking for internet connection.', color='YELLOW')
     try:
         socket.setdefaulttimeout(timeout)
         socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        osd(textarray='Internet connection success!!', indent=1, color='GREEN')
+        print('\n' * 2)
         return True
     except Exception as ex:
+        osd(textarray='Internet appears to be down!', color='RED', indent=1)
         return False
 
 
@@ -145,11 +137,15 @@ File Structures
 
 
 def gitpull(dbbparse):
+    osd(textarray='Pulling From Github.', color='YELLOW')
+    osd("Pulling " + str(dbbparse.paths['root']) + " From Github. NOT HAPPENING DURING DEV", color='GREEN', indent=1)
+    return
     if os.path.isdir(dbbparse.paths['root']):
         osd("Pulling " + str(dbbparse.paths['root']) + " From Github.", color='GREEN', indent=1)
         try:
             g = git.cmd.Git(dbbparse.paths['root'])
             g.pull()
+            print('\n' * 2)
             return True
         except Exception as e:
             osd("Pulling " + str(dbbparse.paths['root']) + " From Github Failed: " + str(e), color='RED', indent=1)
@@ -191,18 +187,20 @@ def relativepaths(dbbparse):
 
 
 def tempclean(dbbparse):
+    osd(textarray='Cleaning Temp Directory.', color='YELLOW')
     for root, dirs, files in os.walk(dbbparse.paths['temp'], topdown=False):
         for name in files:
             os.remove(os.path.join(root, name))
         for name in dirs:
             os.rmdir(os.path.join(root, name))
-    placeholderfile = os.path.join(dbbparse.paths['temp'], 'PERMANENT_PLACEHOLDER')
-    open(placeholderfile, 'a').close()
+    placeholderfile = open(os.path.join(dbbparse.paths['temp'], 'PERMANENT_PLACEHOLDER'), 'r+')
+    placeholderfile.close()
     for tempsub in ['Bak', 'Processing']:
         tempsubdir = os.path.join(dbbparse.paths['temp'], tempsub)
         os.mkdir(tempsubdir)
-        placeholderfile = os.path.join(tempsubdir, 'PERMANENT_PLACEHOLDER')
-        open(placeholderfile, 'a').close()
+        placeholderfile = open(os.path.join(tempsubdir, 'PERMANENT_PLACEHOLDER'), 'r+')
+        placeholderfile.close()
+    print('\n' * 2)
 
 
 """
