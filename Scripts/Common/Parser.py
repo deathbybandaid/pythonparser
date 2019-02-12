@@ -226,7 +226,7 @@ def humanized_time(countdownseconds):
 
 def dividerbar(color='BOLD'):
 
-    osd(textarray=["___________________________________________________________"], color='BOLD')
+    osd(textarray=["___________________________________________________________"], color=color)
 
 
 def osd(textarray=[], indent=0, color='BOLD'):

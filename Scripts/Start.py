@@ -193,7 +193,7 @@ def dbb_avatar(dbbparse):
 
 def dividerbar(color='BOLD'):
 
-    osd(textarray=["___________________________________________________________"], color='BOLD')
+    osd(textarray=["___________________________________________________________"], color=color)
 
 
 def osd(textarray=[], indent=0, color='BOLD'):
