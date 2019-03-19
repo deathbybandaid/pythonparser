@@ -112,18 +112,7 @@ def depchecks(dbbparse):
     from pip._internal.utils.misc import get_installed_distributions as getpiplist
 
     osd(textarray='Generating list of installed pip modules.', color='purple', indent=1)
-    pipinstalled = []
-    pipinstalledlist = getpiplist()
-    pipinstalledlist = sorted(["%s==%s" % (i.key, i.version) for i in pipinstalledlist])
-    for pipitem in pipinstalledlist:
-        if pipitem not in ['']:
-            if "=" in pipitem:
-                pipitem = pipitem.split("=")[0]
-            if ">" in pipitem:
-                pipitem = pipitem.split(">")[0]
-            if "<" in pipitem:
-                pipitem = pipitem.split("<")[0]
-            pipinstalled.append(pipitem)
+    pipinstalled = sorted(["%s" % (i.key) for i in get_installed_distributions()])
     print('\n' * 1)
 
     manualpipreqsdeps = []
